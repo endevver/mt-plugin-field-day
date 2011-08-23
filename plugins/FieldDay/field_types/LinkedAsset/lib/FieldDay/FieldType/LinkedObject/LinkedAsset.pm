@@ -93,18 +93,19 @@ sub pre_render {
     $class->SUPER::pre_render(@_);
     my ($param) = @_;
     $param->{'create_label'} = 'Upload';
+    my $field_id = ($param->{'field'} || '') . '-file';
     $param->{'create_form'} = <<"HTML";
 <mtapp:setting
-    id="$param->{'field'}-file"
+    id="$field_id"
     label="Select File:"
 >
-    <input type="file" name="$param->{'field'}-file" id="$param->{'field'}-file" />
+    <input type="file" name="$field_id" id="$field_id" />
 </mtapp:setting>
 $param->{'create_form'}
 HTML
-    $param->{'no_ajax'} = 1;
+    $param->{'no_ajax'}        = 1;
     $param->{'ac_field_width'} = 150;
-    my $asset = MT->model('asset')->load($param->{'value'});
+    my $asset = MT->model('asset')->load($param->{'value'}) if $param->{'value'};
     my $url = ($asset && $asset->class eq 'image') ? $asset->url : '';
     $param->{'preview'} = <<"HTML";
 <a href="$url" id="<mt:var name="field">-link" name="<mt:var name="field">-link"><img src="$url" id="<mt:var name="field">-img" name="<mt:var name="field">-img" width="100" align="top" style="padding-left:20px;" border="0" /></a>
