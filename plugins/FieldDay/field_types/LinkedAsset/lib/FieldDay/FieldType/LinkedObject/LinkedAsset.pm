@@ -92,14 +92,13 @@ sub pre_render {
     my $class = shift;
     $class->SUPER::pre_render(@_);
     my ($param) = @_;
-    my $field = $param->{'field'};
     $param->{'create_label'} = 'Upload';
     $param->{'create_form'} = <<"HTML";
 <mtapp:setting
-    id="${field}-file"
+    id="$param->{'field'}-file"
     label="Select File:"
 >
-    <input type="file" name="${field}-file" id="${field}-file" />
+    <input type="file" name="$param->{'field'}-file" id="$param->{'field'}-file" />
 </mtapp:setting>
 $param->{'create_form'}
 HTML
