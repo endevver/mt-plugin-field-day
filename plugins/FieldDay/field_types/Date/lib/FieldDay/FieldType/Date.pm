@@ -92,6 +92,7 @@ sub pre_edit_options {
     my $class = shift;
     my ($param) = @_;
     for my $key (qw( date_order time minutes input_type ampm_default )) {
+        next unless defined $param->{$key};
         $param->{$param->{$key} . '_selected'} = 1;
     }
 }
