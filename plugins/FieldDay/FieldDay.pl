@@ -17,7 +17,7 @@ use strict;
 use Data::Dumper;
 
 use vars qw( $VERSION $SCHEMA_VERSION );
-$VERSION = '1.4.1';
+$VERSION = '1.5.2';
 $SCHEMA_VERSION = '1.0';
 
 use base qw( MT::Plugin );
@@ -29,8 +29,8 @@ use FieldDay::Util qw( require_type can_edit );
 my $plugin = MT::Plugin::FieldDay->new({
     'id' => 'FieldDay',
     'name' => 'Field Day',
-    'author_name' => 'Six Apart',
-    'author_link' => 'http://www.movabletype.org/',
+    'author_name' => 'MT5 port by Ubiquitic, original code by Six Apart',
+    'author_link' => 'https://github.com/padawan/mt-plugin-field-day/',
     'description' => 'Add fields to Movable Type.',
     'version' => $VERSION,
     'schema_version' => $SCHEMA_VERSION,
@@ -144,18 +144,12 @@ sub init_object_types {
                 }
             }
         }
-        # page actions
-        $page_actions->{$ot->{'object_type'}} = {
-            'configure_fields' => {
-                'label' => 'Configure Fields',
-                'code' => sub { mode_dispatch('cfg_fields', @_, $ot) },
-                $ot->{'has_blog_id'}
-                    ? ('permission' => 'administer_blog')
-                    : ('system_permission' => 'administer')
-            }
-        };
         # menus
-        $menus->{"prefs:fd_$ot->{'object_type'}"} = {
+        $menus->{"extrafields"} = {
+            'label' => 'Extra Fields',
+            'order' => 760
+        };	
+        $menus->{"extrafields:fd_$ot->{'object_type'}"} = {
             'label' => ucfirst($key) . ' Fields',
             'mode' => "fd_cfg_fields",
             'args' => { '_type' => $ot->{'object_type'} },
